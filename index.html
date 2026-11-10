@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>PUNISHER V1</title>
+<style>
+body{background:#0a0a0a;color:white;font-family:Arial;text-align:center;padding:20px}
+.card{background:#1a1a1a;border:2px solid #ff0000;border-radius:15px;padding:20px;margin:10px}
+h1{color:#ff0000;font-size:32px}
+button{padding:15px 30px;font-size:18px;border:none;border-radius:10px;margin:10px;font-weight:bold}
+.start{background:#00ff00}
+.stop{background:#ff0000;color:white}
+#bal{font-size:36px;color:#00ff00}
+</style>
+</head>
+<body>
+<h1>🥊 PUNISHER V1</h1>
+<p>By Vusimuzi | Mobile Bot</p>
+<div class="card">
+<p>Balance</p>
+<div id="bal">$1000.00</div>
+<p>Trades: <span id="trades">0</span> | Time: <span id="time">--</span></p>
+<p>Status: <span id="status">STOPPED</span></p>
+</div>
+<button class="start" onclick="startBot()">▶ START TRADE</button>
+<button class="stop" onclick="stopBot()">⏹ STOP</button>
+<script>
+async function update(){
+let r=await fetch('/api/status');let d=await r.json();
+document.getElementById('bal').innerText='$'+d.balance;
+document.getElementById('trades').innerText=d.trades;
+document.getElementById('time').innerText=d.time;
+document.getElementById('status').innerText=d.running?'RUNNING 🟢':'STOPPED 🔴';
+}
+async function startBot(){await fetch('/api/start');update()}
+async function stopBot(){await fetch('/api/stop');update()}
+setInterval(update,2000);update();
+</script>
+</body>
+</html>
